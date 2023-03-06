@@ -1,3 +1,8 @@
 {
-    "rewrites": [{ "source": "/(.*)", "destination": "/templates/main" }]
+ "routes": [
+      {
+          "src": "(.*)",
+          "dest": "main.py"
+      }
+  ]
 }
