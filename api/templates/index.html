@@ -12,7 +12,13 @@
    <body>
       <div id="particles-js"></div>
        
-      <div id="conversation" class="container d-flex text-bg-dark p-5"></div>
+      <div class="card text-white bg-dark mb-3">
+          <div class="card-body" id="conversation">
+            
+          </div>
+      </div>
+</div>
+       
       <div class="navbar fixed-bottom">
          <form class="container-fluid" id="promptForm" method="POST" action= "{{ url_for("index") }}">
          <div class="input-group">
