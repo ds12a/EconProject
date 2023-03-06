@@ -12,7 +12,7 @@
    <body>
       <div id="particles-js"></div>
        
-      <div id="conversation" class="container d-flex text-bg-dark justify-content-center"></div>
+      <div id="conversation" class="container d-flex text-bg-dark p-5"></div>
       <div class="navbar fixed-bottom">
          <form class="container-fluid" id="promptForm" method="POST" action= "{{ url_for("index") }}">
          <div class="input-group">
@@ -32,12 +32,17 @@
           event.preventDefault();    // prevent page from refreshing
           const formData = new FormData(form);  // grab the data inside the form fields
           conversation.append("user", formData.get("prompt"));
+
+          document.getElementById('prompt').value = '';
+          document.getElementById('prompt').disabled = true;
+          
           fetch('/', {   // assuming the backend is hosted on the same server
               method: 'POST',
               body: conversation,
           }).then((response) => response.text()).then(function(text) {
               conversation.append("server", text);
               displayConversation(conversation);
+              document.getElementById('prompt').disabled = false;
           });
       });
    </script>
