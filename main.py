@@ -13,4 +13,5 @@ def index(newMsgs = []):
     elif request.method == 'GET':
         return render_template("index.html")
 
-app.run(host='0.0.0.0', port=81, debug = True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=81, debug = True)
