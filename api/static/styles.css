@@ -25,3 +25,31 @@ html {
   background-position: 50% 50%;
     z-index: -10;
 }
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.server-msg {
+    animation: slide-in-left 500ms;
+}
+
+.user-msg {
+    animation: slide-in-right;
+}

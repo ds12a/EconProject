@@ -2,8 +2,8 @@ function displayConversation(formData) {
     let html = "";
 
     for (const reply of formData.entries()) {
-        if (reply[0] == "user") html += "<h6>" + reply[1] + "</h6>";
-        else html += "<h4>" + reply[1] + "</h4>";
+        if (reply[0] == "user") html += "<h6 class='slide-in-right'>" + reply[1] + "</h6>";
+        else html += "<h4 class='slide-in-left'>" + reply[1] + "</h4>";
         if (reply[0] != "server") html += "<br>";
     }
 
