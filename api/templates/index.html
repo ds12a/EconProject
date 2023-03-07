@@ -51,6 +51,7 @@
                   displayConversation(conversation);
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
+                  window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
               });
           }
           
