@@ -41,6 +41,8 @@
 
           if (formData.get("prompt").trim().length > 0) {
               conversation.append("user", formData.get("prompt"));
+              alert(conversation.length - 1);
+              alert(conversation[conversation.length - 1]);
               addToConversation(conversation[conversation.length - 1]);
 
               document.getElementById('prompt').value = '';
