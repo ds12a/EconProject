@@ -36,19 +36,23 @@
       form.addEventListener('submit', function(event) {
           event.preventDefault();    // prevent page from refreshing
           const formData = new FormData(form);  // grab the data inside the form fields
-          conversation.append("user", formData.get("prompt"));
 
-          document.getElementById('prompt').value = '';
-          document.getElementById('prompt').disabled = true;
+          if (formData.get("prompt").length > 0) {
+              conversation.append("user", formData.get("prompt"));
+
+              document.getElementById('prompt').value = '';
+              document.getElementById('prompt').disabled = true;
+              
+              fetch('/', {   // assuming the backend is hosted on the same server
+                  method: 'POST',
+                  body: conversation,
+              }).then((response) => response.text()).then(function(text) {
+                  conversation.append("server", text);
+                  displayConversation(conversation);
+                  document.getElementById('prompt').disabled = false;
+              });
+          }
           
-          fetch('/', {   // assuming the backend is hosted on the same server
-              method: 'POST',
-              body: conversation,
-          }).then((response) => response.text()).then(function(text) {
-              conversation.append("server", text);
-              displayConversation(conversation);
-              document.getElementById('prompt').disabled = false;
-          });
       });
    </script>
 </html>

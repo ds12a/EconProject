@@ -18,5 +18,7 @@ window.onerror = function(msg, url, linenumber) {
 alert("Loaded");
 
 particlesJS.load('particles-js', './static/particlesjs-config.json', function() {
+        alert("particles loaded!!!");
       console.log('callback - particles.js config loaded');});
-      
+
+alert("Done?");
