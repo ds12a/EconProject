@@ -35,6 +35,8 @@
       let form = document.getElementById("promptForm");
       form.addEventListener('submit', function(event) {
           event.preventDefault();    // prevent page from refreshing
+
+          document.getElementById("particles-js").style.backgroundColor = "#0048f0";
           const formData = new FormData(form);  // grab the data inside the form fields
 
           if (formData.get("prompt").trim().length > 0) {
@@ -52,6 +54,7 @@
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
                   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+                  document.getElementById("particles-js").style.backgroundColor = "#fffff";
               });
           }
           
