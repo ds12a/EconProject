@@ -1,13 +1,9 @@
-function displayConversation(formData) {
-    let html = "";
+function addToConversation(msg) {
+    document.getElementById("conversation").innerHTML += "<br>";
 
-    for (const reply of formData.entries()) {
-        if (reply[0] == "user") html += "<h6 class='user-msg'>" + reply[1] + "</h6>";
-        else html += "<h4 class='server-msg'>" + reply[1] + "</h4>";
-        if (reply[0] != "server") html += "<br>";
-    }
-
-    document.getElementById("conversation").innerHTML = html + "<br>";
+    if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6 class='user-msg'>" + reply[1] + "</h6>";
+    else document.getElementById("conversation").innerHTML += "<h4 class='server-msg'>" + reply[1] + "</h4>";
+    if (reply[0] != "server") document.getElementById("conversation").innerHTML += "<br>";
 }
 
 window.onerror = function(msg, url, linenumber) {

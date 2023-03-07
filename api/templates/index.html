@@ -41,6 +41,7 @@
 
           if (formData.get("prompt").trim().length > 0) {
               conversation.append("user", formData.get("prompt"));
+              addToConversation(conversation[conversation.length - 1]);
 
               document.getElementById('prompt').value = '';
               document.getElementById('prompt').disabled = true;
@@ -50,7 +51,7 @@
                   body: conversation,
               }).then((response) => response.text()).then(function(text) {
                   conversation.append("server", text);
-                  displayConversation(conversation);
+                  addToConversation(conversation[conversation.length - 1]);
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
                   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
