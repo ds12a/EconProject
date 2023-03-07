@@ -24,7 +24,7 @@ html {
   background-size: cover;
   background-position: 50% 50%;
     z-index: -10;
-    transition: background-color 1000ms linear;
+    transition: background-color 300ms linear;
 }
 
 @keyframes slide-in-left {
@@ -52,5 +52,5 @@ html {
 }
 
 .user-msg {
-    animation: slide-in-right;
+    animation: slide-in-right 500ms;
 }
