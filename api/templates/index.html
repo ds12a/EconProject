@@ -43,7 +43,7 @@
               conversation.append("user", formData.get("prompt"));
               alert(conversation.length - 1);
               alert(conversation[conversation.length - 1]);
-              addToConversation(conversation[conversation.length - 1]);
+              addToConversation(["user", formData.get("prompt")]);
 
               document.getElementById('prompt').value = '';
               document.getElementById('prompt').disabled = true;
@@ -53,7 +53,7 @@
                   body: conversation,
               }).then((response) => response.text()).then(function(text) {
                   conversation.append("server", text);
-                  addToConversation(conversation[conversation.length - 1]);
+                  addToConversation(["server", text]);
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
                   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
