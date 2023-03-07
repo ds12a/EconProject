@@ -12,7 +12,7 @@
    <body>
       <div id="particles-js"> </div>
        
-      <div id="conversation" class="container mx-auto p-5 text-center">
+      <div id="conversation" class="container mx-auto p-5 text-light text-center">
           <h1 class="display-1"> Welcome! </h1>
       </div>
 </div>
@@ -20,7 +20,7 @@
       <div class="navbar fixed-bottom">
          <form class="container-fluid" id="promptForm" method="POST" action= "{{ url_for("index") }}">
          <div class="input-group">
-            <span class="input-group-text">Prompt:</span><br><input onFocus="this.select()" class="form-control" placeholder="What happens next?" type="text" id="prompt" name="prompt"><br>
+            <span class="input-group-text">Prompt:</span><br><input autofocus onFocus="this.select()" class="form-control" placeholder="What happens next?" type="text" id="prompt" name="prompt"><br>
             <button type="submit" form="promptForm" value="Submit" id="subBtn">&#8593;    </button>
          </div>
          </form>
@@ -50,13 +50,10 @@
                   conversation.append("server", text);
                   displayConversation(conversation);
                   document.getElementById('prompt').disabled = false;
+                  document.getElementById('prompt').focus();
               });
           }
           
       });
-
-       particlesJS.load('particles-js', './static/particlesjs-config.json', function() {
-      console.log('callback - particles.js config loaded');});
-
    </script>
 </html>
