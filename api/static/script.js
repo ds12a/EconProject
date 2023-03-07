@@ -1,4 +1,4 @@
-function addToConversation(msg) {
+function addToConversation(reply) {
     document.getElementById("conversation").innerHTML += "<br>";
 
     if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6 class='user-msg'>" + reply[1] + "</h6>";
