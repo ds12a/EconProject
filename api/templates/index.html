@@ -36,15 +36,14 @@
       form.addEventListener('submit', function(event) {
           event.preventDefault();    // prevent page from refreshing
 
-          document.getElementById("particles-js").style.backgroundColor = "#0048f0";
+          
           const formData = new FormData(form);  // grab the data inside the form fields
 
           if (formData.get("prompt").trim().length > 0) {
               conversation.append("user", formData.get("prompt"));
-              alert(conversation.length - 1);
-              alert(conversation[conversation.length - 1]);
               addToConversation(["user", formData.get("prompt")]);
 
+            document.getElementById("particles-js").style.backgroundColor = "#0048f0";
               document.getElementById('prompt').value = '';
               document.getElementById('prompt').disabled = true;
               
@@ -57,7 +56,7 @@
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
                   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
-                  document.getElementById("particles-js").style.backgroundColor = "#fffff";
+                  document.getElementById("particles-js").style.backgroundColor = "#000000";
               });
           }
           

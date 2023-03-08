@@ -1,9 +1,7 @@
 function addToConversation(reply) {
     document.getElementById("conversation").innerHTML += "<br>";
-    alert(reply)
-
-    if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6 class='user-msg'>" + reply[1] + "</h6>";
-    else document.getElementById("conversation").innerHTML += "<h4 class='server-msg'>" + reply[1] + "</h4>";
+    if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6>" + reply[1] + "</h6>";
+    else document.getElementById("conversation").innerHTML += "<h4>" + reply[1] + "</h4>";
     if (reply[0] != "server") document.getElementById("conversation").innerHTML += "<br>";
 }
 
