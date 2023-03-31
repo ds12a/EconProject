@@ -13,7 +13,7 @@
       <div id="particles-js"> </div>
        
       <div id="conversation" class="container mx-auto p-5 text-light text-center">
-          <h1 class="display-1"> Welcome! </h1>
+          <h1 onclick="login()" class="display-1"> BEGIN </h1>
       </div>
 </div>
     <div class="container">
@@ -30,29 +30,42 @@
    </body>
    <script src="{{url_for('static',filename='../static/script.js')}}"></script>
    <script>
-      let conversation = new FormData();
-      conversation.append("init", "Welcome!");
+      let conversation = [];
+      
+
       let form = document.getElementById("promptForm");
       form.addEventListener('submit', function(event) {
-          event.preventDefault();    // prevent page from refreshing
+          event.preventDefault();
 
-          
-          const formData = new FormData(form);  // grab the data inside the form fields
+          const formData = new FormData(form); 
 
           if (formData.get("prompt").trim().length > 0) {
-              conversation.append("user", formData.get("prompt"));
+             
+              let convInfo = conversation;
+            convInfo.push({"story" : getCookie("story")});
+              convInfo.push({"user" : formData.get("prompt")});
               addToConversation(["user", formData.get("prompt")]);
-
+              convInfo.push({"code" : getCookie("code")});
+ window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
             document.getElementById("particles-js").style.backgroundColor = "#0048f0";
               document.getElementById('prompt').value = '';
               document.getElementById('prompt').disabled = true;
-              
-              fetch('/', {   // assuming the backend is hosted on the same server
+
+              fetch('/', { 
                   method: 'POST',
-                  body: conversation,
-              }).then((response) => response.text()).then(function(text) {
-                  conversation.append("server", text);
-                  addToConversation(["server", text]);
+                  headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                  body: JSON.stringify(convInfo),
+              }).then((response) => response.json()).then(function(r) {
+                  text = r["chatResponse"];
+                  if (r["auth"] != "success") {
+                      alert("Your session has ended!");
+                      return;
+                  }
+                  conversation.push({"assistant" : text});
+                  addToConversation(["assistant", text]);
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
                   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });

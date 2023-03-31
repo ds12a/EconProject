@@ -1,7 +1,7 @@
 function addToConversation(reply) {
     document.getElementById("conversation").innerHTML += "<br>";
     if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6>" + reply[1] + "</h6>";
-    else document.getElementById("conversation").innerHTML += "<h4>" + reply[1] + "</h4>";
+    else if (reply[0] == "assistant") document.getElementById("conversation").innerHTML += "<h4>" + reply[1] + "</h4>";
     if (reply[0] != "server") document.getElementById("conversation").innerHTML += "<br>";
 }
 
@@ -36,20 +36,37 @@ particlesJS.load('particles-js', './static/particlesjs-config.json', function() 
       console.log('callback - particles.js config loaded');});
 
 
-let code = prompt("Enter your access code:");
+function login() {
+    let code = prompt("Enter your access code:");
 
-let loginInfo = new FormData();
-loginInfo.append("code", code);
-loginInfo.append("init", "yes");
-
-fetch('/', {   // assuming the backend is hosted on the same server
-                  method: 'POST',
-                  body: loginInfo,
-              }).then((response) => response.text()).then(function(text) {
-                  conversation.append("server", text);
-                  addToConversation(["server", text]);
-                  document.getElementById('prompt').disabled = false;
-                  document.getElementById('prompt').focus();
-                  window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
-                  document.getElementById("particles-js").style.backgroundColor = "#000000";
-              });
+    if (code) {
+        document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4>";
+        setCookie("code", code, 1);
+        setCookie("story", Math.floor(Math.random() * 3).toString(), 1);
+        let info = [];
+        info.push({"story" : getCookie("story")});
+        info.push({"code" : code});  
+        
+        
+        fetch('/', {   // assuming the backend is hosted on the same server
+                          method: 'POST',
+                            headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            },
+                          body: JSON.stringify(info),
+                      }).then((response) => response.json()).then(function(r) {
+            text = r["auth"];
+                        if (text === "success") {
+                                                                        document.getElementById("conversation").innerHTML = "<h4>" + r["chatResponse"] + "</h4>";
+                            conversation.push({"assistant" : r["chatResponse"]});
+                            
+                        }
+                        else {
+                            alert("Authentication failed");
+                            login();
+                        }
+                      });
+    }
+    
+}
