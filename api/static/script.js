@@ -40,7 +40,7 @@ function login() {
     let code = prompt("Enter your access code:");
 
     if (code) {
-        document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4>";
+        document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 5rem; height: 5rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
         setCookie("code", code, 1);
         setCookie("story", Math.floor(Math.random() * 3).toString(), 1);
         let info = [];
