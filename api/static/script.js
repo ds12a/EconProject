@@ -1,7 +1,9 @@
 function addToConversation(reply) {
+    document.getElementById("conversation").innerHTML = document.getElementById("conversation").innerHTML.replaceAll('class="server-msg"', "");
+    document.getElementById("conversation").innerHTML = document.getElementById("conversation").innerHTML.replaceAll('class="user-msg"', "");
     document.getElementById("conversation").innerHTML += "<br>";
-    if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6>" + reply[1] + "</h6>";
-    else if (reply[0] == "assistant") document.getElementById("conversation").innerHTML += "<h4>" + reply[1] + "</h4>";
+    if (reply[0] == "user") document.getElementById("conversation").innerHTML += "<h6 class='user-msg'>" + reply[1] + "</h6>";
+    else if (reply[0] == "assistant") document.getElementById("conversation").innerHTML += "<h4 class='server-msg'>" + reply[1] + "</h4>";
     if (reply[0] != "server") document.getElementById("conversation").innerHTML += "<br>";
 }
 
@@ -40,7 +42,7 @@ function login() {
     let code = prompt("Enter your access code:");
 
     if (code) {
-        document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 5rem; height: 5rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
+        document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 10em; height: 10rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
         setCookie("code", code, 1);
         setCookie("story", Math.floor(Math.random() * 3).toString(), 1);
         let info = [];
@@ -58,11 +60,13 @@ function login() {
                       }).then((response) => response.json()).then(function(r) {
             text = r["auth"];
                         if (text === "success") {
+                            document.getElementById("particles-js").style.backgroundColor = "#000000";
                                                                         document.getElementById("conversation").innerHTML = "<h4>" + r["chatResponse"] + "</h4>";
                             conversation.push({"assistant" : r["chatResponse"]});
                             
                         }
                         else {
+                            document.getElementById("particles-js").style.backgroundColor = "#FF0000";
                             alert("Authentication failed");
                             login();
                         }

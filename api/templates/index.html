@@ -61,6 +61,7 @@
               }).then((response) => response.json()).then(function(r) {
                   text = r["chatResponse"];
                   if (r["auth"] != "success") {
+                      document.getElementById("particles-js").style.backgroundColor = "#FF0000";
                       alert("Your session has ended!");
                       return;
                   }
