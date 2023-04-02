@@ -1,14 +1,17 @@
 import os
 from flask import Flask, render_template, request
 from pymongo import MongoClient
-import datetime
 import openai
+import tiktoken
+import textwrap
 
 openai.api_key = os.getenv("OPENAI")
 
 app = Flask(__name__)
 
+# To set
 CONNECTION_STRING = os.environ['CONNECTION_STRING']
+ALLOWENCE = 1000
 
 client = MongoClient(CONNECTION_STRING)
 db = client["EconProject"]
@@ -21,25 +24,40 @@ PROMPTS = (
 )
 
 
+def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0301"):
+    """Returns the number of tokens used by a list of messages."""
+    try:
+        encoding = tiktoken.encoding_for_model(model)
+    except KeyError:
+        encoding = tiktoken.get_encoding("cl100k_base")
+    if model == "gpt-3.5-turbo-0301":  # note: future models may deviate from this
+        num_tokens = 0
+        for message in messages:
+            num_tokens += 4  # every message follows <im_start>{role/name}\n{content}<im_end>\n
+            for key, value in message.items():
+                num_tokens += len(encoding.encode(value))
+                if key == "name":  # if there's a name, the role is omitted
+                    num_tokens += -1  # role is always required and always 1 token
+        num_tokens += 2  # every reply is primed with <im_start>assistant
+        return num_tokens
+    else:
+        raise NotImplementedError(
+            f"""num_tokens_from_messages() is not presently implemented for model {model}.
+  See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens."""
+        )
 
-def goodCode(code):
-    result = collection.find_one({"access_code": code})
+
+def goodCode(code, result):
     if result is not None:
         print(f"Result found: {result}")
-        if not result['used'] or result['isAdmin']:
-            result['first_used'] = datetime.datetime.now()
-            result['used'] = True
-            collection.update_one({"_id": result["_id"]}, {"$set": result},
-                                  upsert=False)
-            print("code is valid")
+        if result['isAdmin']:
+            print("Admin logging in")
             return True
-        elif result['first_used'] + datetime.timedelta(
-                minutes=3) > datetime.datetime.now():
+        if result['tokens_used'] > ALLOWENCE:
             print("Expired")
-            return True
-        else:
-            print("Already used")
             return False
+        print("code is valid")
+        return True
     else:
         print("Not found")
         return False
@@ -51,6 +69,8 @@ def index():
         response = {}
         messages = []
         data = request.get_json()
+        result = "Not found"
+        response["tokens_used"] = -1
         for item in data:
             key = list(item.keys())[0]
             value = item[key]
@@ -59,15 +79,15 @@ def index():
             elif key == "code":
                 code = value
                 print(f"Coded entered: {code}")
+                result = collection.find_one({"access_code": code})
 
-                if goodCode(code):
+                if goodCode(code, result):
                     response["auth"] = "success"
             elif key in ("assistant", "user"):
+
+                if key == "user": value = textwrap.shorten(value, width=100, placeholder="")
                 print(value)
-                messages.append({
-                    "role": key,
-                    "content": value
-                })
+                messages.append({"role": key, "content": value})
             elif key == "story":
                 try:
                     if int(value) >= 0 and int(value) < len(PROMPTS):
@@ -90,7 +110,18 @@ def index():
             print(f"History: {messages}")
             response["chatResponse"] = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=messages)['choices'][0]['message']['content']
+                messages=messages,
+            max_tokens=500)['choices'][0]['message']['content']
+            messages.append({"assistant": response["chatResponse"]})
+            numToks = num_tokens_from_messages([messages[-1]])
+            print(numToks)
+            if numToks + result["tokens_used"] > ALLOWENCE and not result['isAdmin']:
+                response["auth"] = "failed"
+            result["tokens_used"] += numToks
+            response["tokens_used"] = result["tokens_used"]
+            collection.update_one({"_id": result["_id"]}, {"$set": result},
+                                  upsert=False)
+
         return response
 
     elif request.method == 'GET':

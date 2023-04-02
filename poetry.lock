@@ -467,6 +467,14 @@ global = ["platformdirs (>=1.4.4)"]
 validation = ["pydantic (>=1.7.4)"]
 
 [[package]]
+name = "regex"
+version = "2023.3.23"
+description = "Alternative regular expression module, to replace re."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "replit"
 version = "3.2.5"
 description = "A library for interacting with features of repl.it"
@@ -548,6 +556,21 @@ pytoolconfig = {version = ">=1.2.2", extras = ["global"]}
 [package.extras]
 dev = ["pytest (>=7.0.1)", "pytest-timeout (>=2.1.0)", "build (>=0.7.0)", "pre-commit (>=2.20.0)"]
 doc = ["pytoolconfig", "sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)"]
+
+[[package]]
+name = "tiktoken"
+version = "0.3.3"
+description = "tiktoken is a fast BPE tokeniser for use with OpenAI's models"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+regex = ">=2022.1.18"
+requests = ">=2.26.0"
+
+[package.extras]
+blobfile = ["blobfile (>=2)"]
 
 [[package]]
 name = "toml"
@@ -656,7 +679,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "ec7cbe6d60fdfa41febf2a1573808da7d72a8ebbecf41deb89fa3050495071ef"
+content-hash = "2ecb5d8669ff4b3824bac7d67ac1b1c51ed86b1ae8bad1cf8e3b799439ca0b9b"
 
 [metadata.files]
 aiohttp = []
@@ -697,10 +720,12 @@ pymongo = []
 pyseto = []
 python-lsp-jsonrpc = []
 pytoolconfig = []
+regex = []
 replit = []
 replit-python-lsp-server = []
 requests = []
 rope = []
+tiktoken = []
 toml = []
 tomli = []
 tqdm = []

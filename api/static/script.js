@@ -41,6 +41,8 @@ particlesJS.load('particles-js', './static/particlesjs-config.json', function() 
 function login() {
     let code = prompt("Enter your access code:");
 
+    if (code == null || code == "") login();
+
     if (code) {
         document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 10em; height: 10rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
         setCookie("code", code, 1);
@@ -61,7 +63,8 @@ function login() {
             text = r["auth"];
                         if (text === "success") {
                             document.getElementById("particles-js").style.backgroundColor = "#000000";
-                                                                        document.getElementById("conversation").innerHTML = "<h4>" + r["chatResponse"] + "</h4>";
+                            document.getElementById('prompt').disabled = false;
+                            document.getElementById("tokDisplay").innerHTML = "Tokens Used: " + r["tokens_used"];                                            document.getElementById("conversation").innerHTML = "<h4>" + r["chatResponse"] + "</h4>";
                             conversation.push({"assistant" : r["chatResponse"]});
                             
                         }
