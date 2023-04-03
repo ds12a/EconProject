@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # To set
 CONNECTION_STRING = os.environ['CONNECTION_STRING']
-ALLOWENCE = 3000
+ALLOWENCE = 1000
 
 client = MongoClient(CONNECTION_STRING)
 db = client["EconProject"]

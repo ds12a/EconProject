@@ -80,7 +80,7 @@
                     if (r["auth"] != "success") {
                       document.getElementById("particles-js").style.backgroundColor = "#FF0000";
                       alert("Your session has ended! You can resume your game by entering a new access code after this message.");
-                      login();
+                      login(true);
                   }
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
@@ -90,6 +90,6 @@
           
       });
 
-    login();
+    login(false);
    </script>
 </html>

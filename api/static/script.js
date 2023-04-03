@@ -38,18 +38,21 @@ particlesJS.load('particles-js', './static/particlesjs-config.json', function() 
       console.log('callback - particles.js config loaded');});
 
 
-function login() {
+function login(resuming) {
     let code = prompt("Enter your access code:");
 
-    if (code == null || code == "") login();
+    if (code == null || code == "") login(resuming);
 
     if (code) {
-        document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 10em; height: 10rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
         setCookie("code", code, 1);
-        setCookie("story", Math.floor(Math.random() * 3).toString(), 1);
-        let info = [];
+        if (!resuming) {
+            document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 10em; height: 10rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
+            setCookie("story", Math.floor(Math.random() * 3).toString(), 1);
+        
+            let info = [];
         info.push({"story" : getCookie("story")});
         info.push({"code" : code});  
+            
         
         
         fetch('/', {   // assuming the backend is hosted on the same server
@@ -71,9 +74,11 @@ function login() {
                         else {
                             document.getElementById("particles-js").style.backgroundColor = "#FF0000";
                             alert("Authentication failed");
-                            login();
+                            login(resuming);
                         }
                       });
+        }
+        
     }
     
 }
