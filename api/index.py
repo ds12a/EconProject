@@ -85,7 +85,7 @@ def index():
                     response["auth"] = "success"
             elif key in ("assistant", "user"):
 
-                if key == "user": value = textwrap.shorten(value, width=100, placeholder="")
+                if key == "user": value = textwrap.shorten(value, width=500, placeholder="")
                 print(value)
                 messages.append({"role": key, "content": value})
             elif key == "story":
@@ -108,10 +108,14 @@ def index():
             response["auth"] = "failed"
         elif "chatResponse" not in response:
             print(f"History: {messages}")
-            response["chatResponse"] = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=messages,
-            max_tokens=500)['choices'][0]['message']['content']
+            try:
+                response["chatResponse"] = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=messages,
+                max_tokens=500)['choices'][0]['message']['content']
+            except:
+                response["auth"] = "failed"
+                response["chatResponse"] = "Too many tokens used. Cannot resume this game."
             messages.append({"assistant": response["chatResponse"]})
             numToks = num_tokens_from_messages([messages[-1]])
             print(numToks)
