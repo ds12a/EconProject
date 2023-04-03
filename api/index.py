@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # To set
 CONNECTION_STRING = os.environ['CONNECTION_STRING']
-ALLOWENCE = 1000
+ALLOWENCE = 3000
 
 client = MongoClient(CONNECTION_STRING)
 db = client["EconProject"]
@@ -117,8 +117,8 @@ def index():
                 response["auth"] = "failed"
                 response["chatResponse"] = "Too many tokens used. Cannot resume this game."
             messages.append({"assistant": response["chatResponse"]})
-            numToks = num_tokens_from_messages([messages[-1]])
-            print(numToks)
+            numToks = num_tokens_from_messages(messages)
+            print(f"Adding entire conversation: {numToks}")
             if numToks + result["tokens_used"] > ALLOWENCE and not result['isAdmin']:
                 response["auth"] = "failed"
             result["tokens_used"] += numToks
