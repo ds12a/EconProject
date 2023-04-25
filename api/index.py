@@ -111,8 +111,9 @@ def index():
             except IndexError:
               return render_template("index.html")
         if "auth" not in response or (result["tokens_used"] > ALLOWENCE and not result['isAdmin']):
-            print("setting to failed")
+            print("setting to failed or run out")
             response["auth"] = "failed"
+            response["chatResponse"] = "Access code expired."
         elif "chatResponse" not in response:
             print(f"History: {messages}")
             try:

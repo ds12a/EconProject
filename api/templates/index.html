@@ -72,7 +72,7 @@
               }).then((response) => response.json()).then(function(r) {
                   text = r["chatResponse"];
                   
-                  conversation.push({"assistant" : text});
+                  
                   addToConversation(["assistant", text]);
                   window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
                   document.getElementById("tokDisplay").innerHTML = "Tokens Used: " + r["tokens_used"];
@@ -82,6 +82,9 @@
                       alert("Your session has ended! You can resume your game by entering a new access code after this message.");
                       login(true);
                   }
+                else {
+                  conversation.push({"assistant" : text});
+                }
                   document.getElementById('prompt').disabled = false;
                   document.getElementById('prompt').focus();
                   document.getElementById("particles-js").style.backgroundColor = "#000000";
