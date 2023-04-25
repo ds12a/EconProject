@@ -47,7 +47,7 @@ function login(resuming) {
         setCookie("code", code, 1);
         if (!resuming) {
             document.getElementById("conversation").innerHTML = "<h4>Authenticating access code and generating story...</h4><div class='overlay'><div class='spinner-border' style='width: 10em; height: 10rem;' role='status'><span class='visually-hidden'>Loading...</span></div></div>";
-            setCookie("story", Math.floor(Math.random() * 3).toString(), 1);
+            setCookie("story", Math.floor(Math.random() * 7).toString(), 1);
         
             let info = [];
         info.push({"story" : getCookie("story")});
